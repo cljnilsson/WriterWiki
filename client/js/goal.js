@@ -1,11 +1,13 @@
+import RNG from "./rng";
+
 class GoalPoint {
     constructor() {
         this.generatePoint();
     }
 
     generatePoint() {
-        this.x = 300;
-        this.y = 300;
+        this.x = RNG.getRandomInt(300, 600);
+        this.y = RNG.getRandomInt(300, 600);
     }
 
     render() {

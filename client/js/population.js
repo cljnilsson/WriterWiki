@@ -11,9 +11,9 @@ class Population {
         }
     }
 
-    repopulate(mutateX, mutateY) {
+    repopulate(mutation) {
         for(let dna of this.population) {
-            dna.updateGenes(mutateX, mutateY);
+            dna.updateGenes(mutation);
         }
     }
 }

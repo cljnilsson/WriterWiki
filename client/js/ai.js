@@ -1,3 +1,5 @@
+import RNG from "./rng";
+
 class Ai {
     constructor(dna) {
         this.xSpeed = dna.genes[0];
@@ -5,16 +7,25 @@ class Ai {
         this.dna = dna;
         this.size = 20;
         this.color = 240;
-        this.generatePoint();
+        this.x = dna.pos.x;
+        this.y = dna.pos.y;
+        //this.generatePoint();
     }
 
     get half() {
         return this.size / 2;
     }
 
+    reset() {
+        this.xSpeed = this.dna.genes[0];
+        this.ySpeed = this.dna.genes[1];
+        this.x = this.dna.pos.x;
+        this.y = this.dna.pos.y;
+    }
+
     generatePoint() {
-        this.x = 100;
-        this.y = 100;
+        this.x = RNG.getRandomInt(100, 800);
+        this.y = RNG.getRandomInt(100, 800);
     }
 
     getDistance(x1, y1, x2, y2) {

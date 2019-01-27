@@ -3,10 +3,11 @@ import "p5/lib/p5.min";
 
 import Game from "./js/game";
 
-let game = new Game();
+let game;
 let pause = false;
 
 window.setup = () => {
+    game = new Game();
     createCanvas(900, 900);
     startTimer();
 }
@@ -22,6 +23,11 @@ window.draw = () => {
     }
 
     game.goal.render();
+
+    if(game.mutation) {
+        fill(0);
+        ellipse(game.mutation.x, game.mutation.y, 5, 5);
+    }
 }
 
 function timeout(ms) {
@@ -30,12 +36,10 @@ function timeout(ms) {
 
 async function startTimer() {
     await timeout(2000);
-    console.log(game);
     game.calculateFitness();
     game.naturalSelection();
 
-    console.log(game.selection[0].fitness);
-    if(game.selection[0].fitness <= 25) {
+    if(game.selection[0].fitness <= 15) {
         console.log("finished!");
         console.log(game.selection[0]);
         game.selection[0].color = 0;

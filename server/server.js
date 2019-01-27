@@ -4,6 +4,7 @@ const
     server      = require("http").createServer(app),
     bodyParser  = require("body-parser"),
     helmet      = require('helmet'),
+    ngrok       = require('ngrok'),
     compression = require("compression"),
     path        = require('path');
 
@@ -46,10 +47,19 @@ class Server {
         app.use(express.static(__dirname + "/../public"));
     }
 
-    startup() {
+    async startup() {
         server.listen(this.port);
         console.log(`started on port ${this.port}`);
         //opn(`http://localhost:${this.port}`);
+        await this.setupPublicPreview();
+        console.log("Public url: " + this.url);
+    }
+
+    async setupPublicPreview() {
+        this._url = await ngrok.connect({
+            addr: process.env.PORT || 3000,
+            region: "eu"
+        });
     }
 
 }

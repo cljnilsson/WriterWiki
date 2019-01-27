@@ -7,7 +7,7 @@ class Game {
     constructor() {
         this.goal = new GoalPoint();
         this.ais = [];
-        this.pop = new Population(2, 0, 12);
+        this.pop = new Population(2, 0, 10);
 
         for(let dna of this.pop.population) {
             //console.log(dna);
@@ -48,29 +48,24 @@ class Game {
     }
 
     mutate() {
-        let totalX = 0;
-        let totalY = 0;
-        let averageX;
-        let averageY;
+        let pos        = createVector(0, 0);
+        let averagePos = createVector(0, 0);
 
         for(let ai of this.selection) {
-            totalX += ai.xSpeed;
-            totalY += ai.ySpeed;
+            pos.x += ai.x;
+            pos.y += ai.y;
         }
 
-        averageX = totalX / this.selection.length;
-        averageY = totalY / this.selection.length;
+        averagePos.x = pos.x / this.selection.length;
+        averagePos.y = pos.y / this.selection.length;
 
-        this.mutateX = averageX;
-        this.mutateY = averageY;
+        this.mutation = averagePos;
     }
 
     repopulate() {
-        this.pop.repopulate(this.mutateX, this.mutateY);
-        this.ais = [];
-        for(let dna of this.pop.population) {
-            let ai = new Ai(dna);
-            this.ais.push(ai);
+        this.pop.repopulate(this.mutation);
+        for(let ai of this.ais) {
+            ai.reset();
         }
     }
 }
