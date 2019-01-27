@@ -1,7 +1,8 @@
 class Ai {
-    constructor() {
-        this.xSpeed = 1;
-        this.ySpeed = 0;
+    constructor(dna) {
+        this.xSpeed = dna.genes[0];
+        this.ySpeed = dna.genes[1];
+        this.dna = dna;
         this.size = 20;
         this.color = 240;
         this.generatePoint();
@@ -14,6 +15,14 @@ class Ai {
     generatePoint() {
         this.x = 100;
         this.y = 100;
+    }
+
+    getDistance(x1, y1, x2, y2) {
+        return Math.hypot(x2-x1, y2-y1);
+    }
+
+    calculateFitness(goal) {
+        this.fitness = this.getDistance(this.x, this.y, goal.x, goal.y);
     }
 
     correctCoord(val) {
