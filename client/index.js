@@ -7,8 +7,8 @@ let game;
 let pause = false;
 
 window.setup = () => {
-    game = new Game();
-    createCanvas(900, 900);
+    game = new Game(1920, 1080);
+    createCanvas(1920, 1080);
     startTimer();
 }
 
@@ -18,8 +18,14 @@ window.draw = () => {
     for(let a of game.ais) {
         if(pause === false) {
             a.update();
+            a.calculateFitness(game.goal);
+            if(a.fitness <= 15) {
+                pause = true;
+                a.color = 0;
+            }
         }
         a.render();
+
     }
 
     game.goal.render();

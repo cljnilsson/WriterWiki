@@ -4,14 +4,16 @@ import Population from "./population";
 import _ from "lodash";
 
 class Game {
-    constructor() {
+    constructor(sizeX, sizeY) {
         this.goal = new GoalPoint();
-        this.ais = [];
-        this.pop = new Population(2, 0, 10);
+        this.ais  = [];
+        this.pop  = new Population(2, 0, 15);
+        this.width = sizeX;
+        this.height = sizeY;
 
         for(let dna of this.pop.population) {
             //console.log(dna);
-            let ai = new Ai(dna);
+            let ai = new Ai(this, dna);
             this.ais.push(ai);
         }
 
@@ -25,22 +27,18 @@ class Game {
     }
 
     naturalSelection() {
-        let top = [{fitness: 9999}];
+        let top = [{bestFitness: 999999}];
         let grab = 3;
 
         for(let ai of this.ais) {
             for(let ele of top) {
-                if(ai.fitness <= ele.fitness) {
+                if(ai.bestFitness <= ele.bestFitness) {
                     top.push(ai);
-                    top = _.sortBy(top, [(ai) => {return ai.fitness}]);
+                    top = _.sortBy(top, [(ai) => {return ai.bestFitness}]);
                     top = top.slice(0, grab);
                     break;
                 }
             }
-        }
-
-        for(let ai of top) {
-            ai.color = 50;
         }
 
         this.selection = top;
@@ -52,8 +50,9 @@ class Game {
         let averagePos = createVector(0, 0);
 
         for(let ai of this.selection) {
-            pos.x += ai.x;
-            pos.y += ai.y;
+            console.log(ai);
+            pos.x += ai.bestFitnessPos.x;
+            pos.y += ai.bestFitnessPos.y;
         }
 
         averagePos.x = pos.x / this.selection.length;

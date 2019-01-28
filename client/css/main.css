@@ -2,4 +2,6 @@ body {
     margin: 0px;
     overflow: hidden;
     background-image: url("../imgs/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }

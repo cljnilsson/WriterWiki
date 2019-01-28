@@ -1,15 +1,15 @@
-import RNG from "./rng";
-
 class Ai {
-    constructor(dna) {
-        this.xSpeed = dna.genes[0];
-        this.ySpeed = dna.genes[1];
-        this.dna = dna;
-        this.size = 20;
-        this.color = 240;
-        this.x = dna.pos.x;
-        this.y = dna.pos.y;
-        //this.generatePoint();
+    constructor(game, dna) {
+        this.game           = game;
+        this.xSpeed         = dna.genes[0];
+        this.ySpeed         = dna.genes[1];
+        this.dna            = dna;
+        this.size           = 20;
+        this.color          = 240;
+        this.x              = dna.pos.x;
+        this.y              = dna.pos.y;
+        this.fitness        = 9999;
+        this.bestFitness    = 9999;
     }
 
     get half() {
@@ -19,13 +19,8 @@ class Ai {
     reset() {
         this.xSpeed = this.dna.genes[0];
         this.ySpeed = this.dna.genes[1];
-        this.x = this.dna.pos.x;
-        this.y = this.dna.pos.y;
-    }
-
-    generatePoint() {
-        this.x = RNG.getRandomInt(100, 800);
-        this.y = RNG.getRandomInt(100, 800);
+        this.x      = this.dna.pos.x;
+        this.y      = this.dna.pos.y;
     }
 
     getDistance(x1, y1, x2, y2) {
@@ -34,14 +29,34 @@ class Ai {
 
     calculateFitness(goal) {
         this.fitness = this.getDistance(this.x, this.y, goal.x, goal.y);
+        if(this.fitness <= this.bestFitness) {
+            this.bestFitness = this.fitness;
+            this.bestFitnessPos = createVector(this.x, this.y);
+        }
     }
 
-    correctCoord(val) {
-        return val >= 900 - this.half ? 900 - this.half : 0 + this.half;
+    correctCoord(val, max) {
+        return val >= max - this.half ? max - this.half : 0 + this.half;
     }
 
-    isCoordOutOfBounds(val) {
-        return val < 0 + this.half || val - this.half >= 900;
+    correctCoordX(val) {
+        return this.correctCoord(val, this.game.width);
+    }
+
+    correctCoordY(val) {
+        return this.correctCoord(val, this.game.height);
+    }
+
+    isCoordOutOfBounds(val, max) {
+        return val < 0 + this.half || val - this.half >= max;
+    }
+
+    isCoordOutOfBoundsX(val) {
+        return this.isCoordOutOfBounds(val, this.game.width);
+    }
+
+    isCoordOutOfBoundsY(val) {
+        return this.isCoordOutOfBounds(val, this.game.height);
     }
 
     update() {
@@ -49,10 +64,10 @@ class Ai {
         this.y += this.ySpeed;
 
         if(this.isCoordOutOfBounds(this.x) === true) {
-            this.x = this.correctCoord(this.x);
+            this.x = this.correctCoordX(this.x);
         }
         if(this.isCoordOutOfBounds(this.y) === true) {
-            this.y = this.correctCoord(this.y);
+            this.y = this.correctCoordY(this.y);
         }
     }
 
