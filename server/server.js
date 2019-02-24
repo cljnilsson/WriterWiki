@@ -4,6 +4,7 @@ const
     server      = require("http").createServer(app),
     bodyParser  = require("body-parser"),
     helmet      = require('helmet'),
+    exphbs      = require("express-handlebars");
     ngrok       = require('ngrok'),
     compression = require("compression"),
     path        = require('path');
@@ -35,7 +36,14 @@ class Server {
     }
 
     dependencies() {
+        var hbs = exphbs.create({
+            extname: ".hbs",
+            defaultLayout: 'main'
+        });
         
+        app.engine(".hbs", hbs.engine);
+        
+        app.set("view engine", ".hbs");
     }
 
     middleware() {

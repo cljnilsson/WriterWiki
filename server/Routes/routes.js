@@ -4,5 +4,5 @@ const
 
 
 app.get("/", (req, res) => {
-    res.sendFile(path.resolve('./public/index.html'));
+    res.render("index");
 })

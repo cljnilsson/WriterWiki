@@ -40,11 +40,6 @@ const fileSettings =
 };
 
 const plugins = [
-	new HtmlWebPackPlugin({
-		hash: false,
-		filename: "./index.html",  //target html
-		template: "./client/index.html" //source html
-	}),
 	new ExtractTextPlugin({ filename: "./css/main.css" })
 ];
 
