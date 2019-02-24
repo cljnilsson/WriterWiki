@@ -1,44 +1,68 @@
-import {Post} from "./js/request";
+import "./js/quill";
+import "./js/create";
+import "./js/edit";
 
-let exists = document.querySelector("#editor");
+$("#search").keyup(onType);
 
-Quill.prototype.getHtml = function() {
-    return this.container.firstChild.innerHTML;
-};
+let selection = 0;
+let currentOptions = [];
 
-if(exists) {
-    let options = [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote'],
-    
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'indent': '-1'}, { 'indent': '+1' }],
-    
-        
-        [{ 'color': [] }, { 'background': [] }],
-        
-        [{align: ''}, {align: 'right'}, {align: 'center'}, {align: 'justify'}],
-    ];
-    
-    var quill = new Quill('#editor', {
-        modules: { toolbar: options},
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
-    });
+function onType(event) {
+    switch(event.which) {
+        case 13:
+            window.location.href = "/wiki/" + $(currentOptions[selection])[0].textContent;
+        break;
+
+        case 38:
+            selection--;
+        break;
+
+        case 40:
+            selection++;
+        break;
+
+        default:
+            filter();
+        break;
+    }
+
+    if(selection < 0) {
+        selection = 0;
+    } else if(selection > currentOptions.length) {
+        selection = currentOptions.length;
+    }
+
+    if(currentOptions.length > 0) {
+        for(let o of currentOptions) {
+            $(o).removeClass("active");
+        }
+        $(currentOptions[selection]).addClass("active");
+    }
 }
 
-$("#write").click(onClick)
-
-function onClick() {
-    let req = new Post("/createWiki");
-    req.data = {
-        title: "Guild",
-        html: quill.getHtml(),
-        raw: quill.getText(),
-        delta: quill.getContents(),
-        version: 1
-    };
-    req.send();
+function filter() {
+    let bar = $("#search")[0].value.toLowerCase();
+    let options = $("#suggestions");
+    let children = options[0].children;
+    let count = 0;
+    for(let o of children) {
+        let text = o.textContent.toLowerCase();
+        if(bar === "") {
+            $(o).hide();
+        } else {
+            if(text.includes(bar) === true) {
+                count++;
+                $(o).show();
+                if(currentOptions.includes(o) === false) {
+                    currentOptions.push(o);
+                }
+                if(count >= 4) {
+                    break;
+                }
+            } else {
+                $(o).hide();
+                currentOptions.filter(item => item === o);
+            }
+        }
+    }
 }

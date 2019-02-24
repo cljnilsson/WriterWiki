@@ -22,6 +22,13 @@ class Model {
 }
 
 class Mongo {
+    static async getAllPages() {
+        let model = Model.page;
+        let all = await model.find({});
+        console.log(all)
+        return all;
+    }
+
     static async makePage(title, html, delta, raw, version) {
         let model = Model.page;
 
@@ -33,6 +40,17 @@ class Mongo {
             version, version
         });
         await page.save();
+        return page;
+    }
+
+    static async updatePage(title, html, delta, raw) {
+        let model = Model.page;
+        let current = await model.findOne({title: title});
+        current.html = html;
+        current.delta = JSON.stringify(delta);
+        current.raw = raw;
+        await current.save();
+        return current;
     }
 
     static async getPage(title) {

@@ -4,8 +4,9 @@ const
     path = require("path");
 
 
-app.get("/", (req, res) => {
-    res.render("index");
+app.get("/", async (req, res) => {
+    let all = await Mongo.getAllPages();
+    res.render("index", {all: all});
 })
 
 app.get("/createPage", (req, res) => {
@@ -14,12 +15,20 @@ app.get("/createPage", (req, res) => {
 
 app.get("/wiki/:title", async (req, res) => {
     let data = await Mongo.getPage(req.params.title);
-    console.log(data);
-    res.render("page", {html: data.html});
+    res.render("page", {html: data.html, title: data.title});
 })
 
-app.post("/createWiki", function(req, res) {
-    console.log(req.body);
-    Mongo.makePage(req.body.title, req.body.html, req.body.delta, req.body.raw, req.body.version);
-    res.status(200);
+app.get("/wiki/:title/edit", async (req, res) => {
+    let data = await Mongo.getPage(req.params.title);
+    res.render("edit", {html: data.html, title: data.title});
+});
+
+app.post("/wiki/:title/edit", async (req, res) => {
+    await Mongo.updatePage(req.params.title, req.body.html, req.body.delta, req.body.raw);
+    res.redirect(`/wiki/${req.params.title}`);
+});
+
+app.post("/createWiki", async function(req, res) {
+    await Mongo.makePage(req.body.title, req.body.html, req.body.delta, req.body.raw, req.body.version);
+    res.redirect(`/wiki/${req.body.title}`);
 })
