@@ -15,33 +15,9 @@ const fileSettings =
 					]
 				}
 			}
-		},
-		{
-			test: /\.css$/,
-			use: ExtractTextPlugin.extract(
-				{
-					fallback: "style-loader",
-					use: ["css-loader"]
-				}
-			)
-		},
-		{
-			test: /\.(png|jpg|gif|webm)$/,
-			use: [
-				{
-					loader: "file-loader",
-					options: {
-						name: "/imgs/[name].[ext]"
-					}
-				}
-			]
 		}
 	]
 };
-
-const plugins = [
-	new ExtractTextPlugin({ filename: "./css/main.css" })
-];
 
 module.exports = {
 	devtool: "source-map",
@@ -51,11 +27,10 @@ module.exports = {
 		extensions: [".jsx", ".js"]
 	},
 	output: {
-		path: path.join(__dirname, "/public"),
-		filename: "index_bundle.js"
+		path: path.join(__dirname, "/client"),
+		filename: "bundle.js"
 	},
 	watch: true,
 	stats: "minimal",
-	module: fileSettings,
-	plugins
+	module: fileSettings
 };

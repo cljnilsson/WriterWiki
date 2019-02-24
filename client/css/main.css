@@ -1,0 +1,39 @@
+html {
+    margin: 0px;
+    overflow: hidden;
+    background-image: url(/imgs/bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    color: white;
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.jumbotron {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.bg {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+#editor {
+    height: 350px;
+}
+
+.ql-stroke {
+    stroke: white !important;
+}
+
+.ql-picker {
+    color: white !important;
+}
+
+.ql-blank::before {
+    color: white !important;
+}

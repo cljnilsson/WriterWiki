@@ -52,7 +52,7 @@ class Server {
         app.use(helmet());
         app.use(bodyParser.json());
         app.use(compression());
-        app.use(express.static(__dirname + "/../public"));
+        app.use(express.static(__dirname + "/../client"));
     }
 
     async startup() {
