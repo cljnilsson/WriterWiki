@@ -3,9 +3,14 @@ import "./js/create";
 import "./js/edit";
 
 $("#search").keyup(onType);
+$(".option").click(onOptionClick);
 
 let selection = 0;
 let currentOptions = [];
+
+function onOptionClick() {
+    window.location.href = "/wiki/" + $(this)[0].textContent;
+}
 
 function onType(event) {
     switch(event.which) {
@@ -26,10 +31,11 @@ function onType(event) {
         break;
     }
 
+
     if(selection < 0) {
         selection = 0;
-    } else if(selection > currentOptions.length) {
-        selection = currentOptions.length;
+    } else if(selection >= currentOptions.length) {
+        selection = currentOptions.length - 1;
     }
 
     if(currentOptions.length > 0) {
@@ -61,7 +67,7 @@ function filter() {
                 }
             } else {
                 $(o).hide();
-                currentOptions.filter(item => item === o);
+                currentOptions = currentOptions.filter(item => item !== o);
             }
         }
     }

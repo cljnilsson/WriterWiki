@@ -37,3 +37,13 @@ body {
 .ql-blank::before {
     color: white !important;
 }
+
+.navbar-toggler {
+    display: none;
+}
+
+.list-group-item:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
