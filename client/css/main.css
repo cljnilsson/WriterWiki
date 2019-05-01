@@ -1,9 +1,12 @@
 html {
     margin: 0px;
-    overflow: hidden;
     background-image: url(/imgs/bg.png);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-attachment: fixed;
+}
+
+p {
+    margin-bottom: 0;
 }
 
 h1 {
@@ -33,6 +36,11 @@ body {
 .ql-picker {
     color: white !important;
 }
+
+.ql-picker-options {
+    color: black !important;
+}
+
 
 .ql-blank::before {
     color: white !important;

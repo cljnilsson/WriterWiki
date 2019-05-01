@@ -1,6 +1,7 @@
 const
     mongoose = require('mongoose'),
     path = require("path"),
+    fs = require("fs"),
     schemas = require("./schemas/schemas");
 
 require('dotenv').config({path: path.join(__dirname, '../../.env')});
@@ -25,7 +26,6 @@ class Mongo {
     static async getAllPages() {
         let model = Model.page;
         let all = await model.find({});
-        console.log(all)
         return all;
     }
 
@@ -58,6 +58,19 @@ class Mongo {
         let data = await model.findOne({title: title});
         return data;
     }
+
+    static async backup(name = "pages")  {
+        let pages = await Mongo.getAllPages();
+        pages = JSON.stringify(pages);
+
+        fs.writeFile(`backup/${name}.json`, pages, "utf8", () => {});
+
+        return true;
+    }
 }
+
+(async function() {
+    Mongo.backup("latest_pages");
+})();
 
 module.exports = Mongo;

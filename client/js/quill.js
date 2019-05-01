@@ -7,7 +7,6 @@ Quill.prototype.getHtml = function() {
 if(exists) {
     let options = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         ['blockquote'],
     

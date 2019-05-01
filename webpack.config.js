@@ -15,9 +15,22 @@ const fileSettings =
 					]
 				}
 			}
-		}
+		},
+		{
+			test: /\.css$/,
+			use: ExtractTextPlugin.extract(
+				{
+					fallback: "style-loader",
+					use: ["css-loader"]
+				}
+			)
+		},
 	]
 };
+
+const plugins = [
+	new ExtractTextPlugin({ filename: "./css/main_bundle.css" })
+];
 
 module.exports = {
 	devtool: "source-map",
@@ -32,5 +45,6 @@ module.exports = {
 	},
 	watch: true,
 	stats: "minimal",
-	module: fileSettings
+	module: fileSettings,
+	plugins
 };

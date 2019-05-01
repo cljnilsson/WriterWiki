@@ -1,9 +1,14 @@
 import "./js/quill";
 import "./js/create";
 import "./js/edit";
+import "./js/request";
+import { Post } from "./js/request";
+import "quill/dist/quill.snow.css";
+
 
 $("#search").keyup(onType);
 $(".option").click(onOptionClick);
+$("#backup").click(onBackupClick);
 
 let selection = 0;
 let currentOptions = [];
@@ -20,22 +25,21 @@ function onType(event) {
 
         case 38:
             selection--;
+            if(selection < 0) {
+                selection = 0;
+            }
         break;
 
         case 40:
             selection++;
+            if(selection >= currentOptions.length) {
+                selection = currentOptions.length - 1;
+            }
         break;
 
         default:
             filter();
         break;
-    }
-
-
-    if(selection < 0) {
-        selection = 0;
-    } else if(selection >= currentOptions.length) {
-        selection = currentOptions.length - 1;
     }
 
     if(currentOptions.length > 0) {
@@ -51,8 +55,10 @@ function filter() {
     let options = $("#suggestions");
     let children = options[0].children;
     let count = 0;
+
     for(let o of children) {
         let text = o.textContent.toLowerCase();
+        
         if(bar === "") {
             $(o).hide();
         } else {
@@ -71,4 +77,9 @@ function filter() {
             }
         }
     }
+}
+
+function onBackupClick() {
+    console.log("click");
+    new Post("/backup").send();
 }

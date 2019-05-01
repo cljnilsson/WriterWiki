@@ -31,4 +31,9 @@ app.post("/wiki/:title/edit", async (req, res) => {
 app.post("/createWiki", async function(req, res) {
     await Mongo.makePage(req.body.title, req.body.html, req.body.delta, req.body.raw, req.body.version);
     res.redirect(`/wiki/${req.body.title}`);
+});
+
+app.post("/backup", async (req, res) => {
+    await Mongo.backup();
+    res.status(200).send("Complete");
 })
