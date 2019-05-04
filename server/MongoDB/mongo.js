@@ -43,6 +43,23 @@ class Mongo {
         return page;
     }
 
+    static async deletePage(page) {
+        let model = Model.page;
+        model.deleteMany({title: page}, err => true);
+
+        return true;
+    }
+
+    static async updateName(from, to) {
+        let model = Model.page;
+        let current = await model.findOne({title: from});
+
+        current.title = to;
+
+        await current.save();
+        return current;
+    }
+
     static async updatePage(title, html, delta, raw) {
         let model = Model.page;
         let current = await model.findOne({title: title});

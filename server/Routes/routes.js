@@ -24,8 +24,16 @@ app.get("/wiki/:title/edit", async (req, res) => {
 });
 
 app.post("/wiki/:title/edit", async (req, res) => {
-    await Mongo.updatePage(req.params.title, req.body.html, req.body.delta, req.body.raw);
-    res.redirect(`/wiki/${req.params.title}`);
+    console.log(req.body.title);
+    let title = req.params.title;
+
+    if(req.body.title) {
+        title = req.body.title;
+        await Mongo.updateName(req.params.title, req.body.title);
+    }
+
+    await Mongo.updatePage(title, req.body.html, req.body.delta, req.body.raw);
+    res.redirect(`/wiki/${title}`);
 });
 
 app.post("/createWiki", async function(req, res) {
@@ -36,4 +44,9 @@ app.post("/createWiki", async function(req, res) {
 app.post("/backup", async (req, res) => {
     await Mongo.backup();
     res.status(200).send("Complete");
+})
+
+app.post("/wiki/:title/delete", async (req, res) => {
+    await Mongo.deletePage(req.params.title);
+    res.redirect("/");
 })
