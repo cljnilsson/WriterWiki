@@ -1,13 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand mr-auto" href="/"><b>Wiki</b></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <form class="form-inline my-2 my-lg-0">
-    <button id="backup" class="btn btn-outline-success my-2 my-sm-0 mr-1" type="button">Local Backup</button>
-    <a href="/createPage">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="button">Add Page</button>
-    </a>
-  </form>
+	<div class="row w-100">
+		<div class="col">
+			<a href="/"><img src="/imgs/logo.png"></a>
+		</div>
+			<div class="col p-1">
+				<div class="float-right">
+					{{#if wiki}}
+						<button id="backup" class="btn btn-outline-dark my-2 my-sm-0 mx-1" type="button">Local Backup</button>
+						<a href="/wiki/{{wiki}}/createPage">
+							<button class="btn btn-outline-dark my-2 my-sm-0" type="button">Add Page</button>
+						</a>
+					{{/if}}
+					{{#if wikis}}
+						<a href="/createWiki">
+							<button class="btn btn-outline-dark my-2 my-sm-0" type="button">New Wiki</button>
+						</a>
+					{{/if}}
+				</div>
+			</div>
+	</div>
 </nav>

@@ -14,7 +14,7 @@ let selection = 0;
 let currentOptions = [];
 
 function onOptionClick() {
-    window.location.href = "/wiki/" + $(this)[0].textContent;
+    window.location.href = "/wiki/" + $("#wikiname").text() + "/" + $(this)[0].textContent;
 }
 
 function onType(event) {

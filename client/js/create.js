@@ -4,9 +4,12 @@ import quill from "./quill";
 $("#write").click(onWriteClick);
 
 async function onWriteClick() {
-    let name = $("#name")[0].value;
-    console.log(name);
-    let req = new Post("/createWiki");
+	let name = $("#name")[0].value;
+	let wiki = $("#wikiname").text();
+	console.log(wiki);
+	console.log(name);
+	console.log("/wiki/" + wiki +"/createPage");
+    let req = new Post("/wiki/" + wiki +"/createPage");
     req.data = {
         title: name,
         html: quill.getHtml(),

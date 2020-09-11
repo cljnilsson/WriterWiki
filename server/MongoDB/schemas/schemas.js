@@ -7,6 +7,7 @@ function add(obj) {
 }
 
 add(require("./page"));
+add(require("./wiki"));
 
 module.exports.all = schemas;
 module.exports.get = function(name) {

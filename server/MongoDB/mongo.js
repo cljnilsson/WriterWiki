@@ -9,7 +9,8 @@ require('dotenv').config({path: path.join(__dirname, '../../.env')});
 mongoose.connect(process.env.DB_URL, {
     user: process.env.DB_USER,
     pass: process.env.DB_PASS,
-    useNewUrlParser: true
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 });
 
 function getRandomArbitrary(min, max) {
@@ -19,28 +20,94 @@ function getRandomArbitrary(min, max) {
 class Model {
     static get page() {
         return mongoose.model("pages", schemas.get("page"));
+	}
+	
+	static get wiki() {
+        return mongoose.model("wiki", schemas.get("wiki"));
     }
 }
+
+(async () => {
+	let all = await Model.wiki.find({});
+	if(all.length == 0) {
+		console.warn("No wikis founds in db, creating default");
+		await Mongo.makeWiki("Auto-generated Wiki");
+		console.log("Done");
+	}
+})();
+
+(async () => {
+	let all = await Model.page.find({});
+	for(let i of all) {
+		if(i.wiki == null) {
+			console.log("Legacy wiki page " + i.title + " detected, setting connected wiki to first existing wiki");
+			let model = Model.wiki;
+			let first = await model.findOne({});
+			i.wiki = first._id;
+			i.save();
+		}
+	}
+})();
 
 class Mongo {
     static async getAllPages() {
         let model = Model.page;
         let all = await model.find({});
         return all;
+	}
+	
+	static async getAllPagesFromWikiByName(name) {
+		let wikimodel = Model.wiki;
+		let pagemodel = Model.page;
+
+		let wiki	  = await Mongo.getWikiByName(name);
+		let all 	  = await pagemodel.find({wiki: wiki._id});
+		
+        return all;
     }
 
-    static async makePage(title, html, delta, raw, version) {
-        let model = Model.page;
+	static async getWikiByName(name) {
+		let model = Model.wiki;
+		return await model.findOne({name: name});
+	}
+
+	static async getWikiIdByName(name) {
+		let wiki = await Mongo.getWikiByName(name);
+		return wiki._id;
+	}
+
+    static async makePage(title, html, delta, raw, version, wiki) {
+		let model = Model.page;
+		let w = await Mongo.getWikiByName(wiki);
+		let id = await Mongo.getWikiIdByName(wiki);
 
         let page = new model({
             title: title,
             html: html,
             delta: JSON.stringify(delta),
             raw: raw,
-            version, version
+			version, version,
+			wiki: id
         });
         await page.save();
         return page;
+	}
+
+	static async getAllWikis() {
+        let model = Model.wiki;
+        let all = await model.find({});
+        return all;
+    }
+	
+	static async makeWiki(name) {
+        let model = Model.wiki;
+
+        let wiki = new model({
+			name: name
+		});
+
+        await wiki.save();
+        return wiki;
     }
 
     static async deletePage(page) {

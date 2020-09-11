@@ -4,7 +4,6 @@ import quill from "./quill";
 $("#edit").click(onEditClick);
 $("#delete").click(onDeleteClick);
 
-
 function getTitle() {
     let title = $("#title")[0].textContent;
     return title.substring(title.indexOf(" ") + 1, title.length);
@@ -12,11 +11,11 @@ function getTitle() {
 
 async function onEditClick() {
     let title = getTitle();
-    let newTitle = $("#name")[0].value;
-    console.log(newTitle);
-    console.log(title);
+	let newTitle = $("#name")[0].value;
+	let wiki = $("#edit").data(wiki).wiki;
     
-    let req = new Post(`/wiki/${title}/edit`);
+	let req = new Post(`/wiki/${wiki}/${title}/edit`);
+	console.log(`/wiki/${wiki}/${title}/edit`)
     req.data = {
         html: quill.getHtml(),
         raw: quill.getText(),

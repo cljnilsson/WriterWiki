@@ -6,7 +6,8 @@ const pageSchema = new Schema({
     html: String,
     raw: String,
     delta: String,
-    version: String
+	version: String,
+	wiki: String
 });
 
 module.exports = {

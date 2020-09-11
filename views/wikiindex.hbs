@@ -1,0 +1,41 @@
+<div class="bg">
+	<div class="row">
+		<div class="col text-light text-center">
+			<h3 id="wikiname">{{wiki}}</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<div class="dropdown">
+				<button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Select Wiki
+				</button>
+			
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					{{#each wikis}}
+						{{#with this}}
+							<li><a href="/wiki/{{name}}">{{name}}</a></li>
+						{{/with}}
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+		<div class="col col-md">
+			<div class="input-group input-group-lg mt-4">
+				<input type="text" id="search" class="form-control input-lg" placeholder="My cool character.." autocomplete="off">
+				<div class="input-group-append">
+					<button class="btn btn-outline-light" type="button">Search</button>
+				</div>
+			</div>
+			<ul id="suggestions" class="list-group">
+				{{#each all}}
+					{{#with this}}
+						<li class="list-group-item option" style="display: none;">{{title}}</li>
+					{{/with}}
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</div>
