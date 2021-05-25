@@ -1,0 +1,71 @@
+html {
+    margin: 0px;
+    background-image: url(/imgs/bg.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+h1 {
+    color: white;
+}
+
+nav {
+	padding: 0 0 0 0 !important;
+}
+
+nav img {
+	max-width: 7rem;
+	max-height: 3rem;
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.jumbotron {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.bg {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+#editor {
+    height: 350px;
+}
+
+.container {
+	min-height: 500px;
+}
+
+.ql-stroke {
+    stroke: white !important;
+}
+
+.ql-picker {
+    color: white !important;
+}
+
+.ql-picker-options {
+    color: black !important;
+}
+
+
+.ql-blank::before {
+    color: white !important;
+}
+
+.navbar-toggler {
+    display: none;
+}
+
+.list-group-item:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
